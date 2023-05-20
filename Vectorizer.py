@@ -1,12 +1,13 @@
 from FileExtensionReplacer import FileExtensionReplacer
 import requests
 import configparser
+from io import BytesIO
 
 class Vectorizer:
-    def __init__(self, name, source_path, destination_path):
+    def __init__(self, name, source_path):
         self.name = name
         self.source_path = source_path + name
-        self.destination_path = destination_path + FileExtensionReplacer.replace_file_extension(name, ".svg")
+        self.buffer = BytesIO()
 
     def vectorize(self):
         print(f"Vectorizing image '{self.name}' ...")
@@ -26,7 +27,12 @@ class Vectorizer:
         )
         if response.status_code == requests.codes.ok:
             # Save result
-            with open(self.destination_path, 'wb') as out:
-                out.write(response.content)
+            self.buffer = response.content
         else:
             print("Error:", response.status_code, response.text)
+    
+    
+    def saveFile(self, destination_path):
+        destination_path = destination_path + FileExtensionReplacer.replace_file_extension(self.name, ".svg")
+        with open(destination_path, 'wb') as out:
+                out.write(self.buffer)
