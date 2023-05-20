@@ -1,4 +1,3 @@
-from PNGUpscaler import PNGUpscaler
 from SVGToPNG import SVGtoPNG
 from Vectorizer import Vectorizer
 import os
@@ -17,13 +16,7 @@ for filename in os.listdir(base_inbox_directory):
 
 for filename in os.listdir(svg_inbox_directory):
     if os.path.isfile(os.path.join(svg_inbox_directory, filename)):
-        processor = SVGtoPNG(filename, svg_inbox_directory, output_width=3600, output_height=3600)
+        processor = SVGtoPNG(filename, svg_inbox_directory, output_width=3600, output_height=3600, quality = 1)
         processor.convert()
-        processor.saveFile(png_inbox_directory)
-
-for filename in os.listdir(png_inbox_directory):
-    if os.path.isfile(os.path.join(png_inbox_directory, filename)):
-        processor = PNGUpscaler(filename, png_inbox_directory, quality=1)
         processor.compress()
-        processor.saveFile(outbox_directory)
-
+        processor.saveFile(png_inbox_directory)
