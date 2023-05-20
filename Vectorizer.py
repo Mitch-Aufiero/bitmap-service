@@ -2,6 +2,10 @@ from FileExtensionReplacer import FileExtensionReplacer
 import requests
 import configparser
 from io import BytesIO
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import storage
+
 
 class Vectorizer:
     def __init__(self, name, source_path):
@@ -34,5 +38,19 @@ class Vectorizer:
     
     def saveFile(self, destination_path):
         destination_path = destination_path + FileExtensionReplacer.replace_file_extension(self.name, ".svg")
-        with open(destination_path, 'wb') as out:
-                out.write(self.buffer)
+
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+
+        cred = credentials.Certificate("serviceaccount.json")
+        firebase_admin.initialize_app( cred, options ={'storageBucket': 'scrapbooking-ai.appspot.com'})
+
+        bucket = storage.bucket()
+
+        self.buffer.seek(0)
+        blob = bucket.blob(destination_path)
+        blob.upload_from_file(self.buffer)
+
+        #destination_path = destination_path + FileExtensionReplacer.replace_file_extension(self.name, ".svg")
+        #with open(destination_path, 'wb') as out:
+        #        out.write(self.buffer)

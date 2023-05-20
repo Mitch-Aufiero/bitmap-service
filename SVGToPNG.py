@@ -2,6 +2,9 @@ from FileExtensionReplacer import FileExtensionReplacer
 import cairosvg
 from io import BytesIO
 from PIL import Image
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import storage
 
 
 class SVGtoPNG:
@@ -13,6 +16,7 @@ class SVGtoPNG:
         self.quality = quality
         self.dpi = dpi
         self.buffer = BytesIO()
+        
 
     def convert(self):
         print(f"Converting image '{self.name}' with output_width={self.output_width} and output_height={self.output_height}")
@@ -28,7 +32,16 @@ class SVGtoPNG:
 
     
     def saveFile(self, destination_path):
-        destination_path = destination_path + FileExtensionReplacer.replace_file_extension(self.name, ".png")
-        with open(destination_path, 'wb') as out:
-                out.write(self.buffer.getvalue())
+        destination_path = destination_path + FileExtensionReplacer.replace_file_extension(self.name, "1.png")
+
+        cred = credentials.Certificate("serviceaccount.json")
+        firebase_admin.initialize_app( cred, options ={'storageBucket': 'scrapbooking-ai.appspot.com'})
+
+        bucket = storage.bucket()
+        self.buffer.seek(0)
+        blob = bucket.blob(destination_path)
+        blob.upload_from_file(self.buffer)
+
+        #with open(destination_path, 'wb') as out:
+        #        out.write(self.buffer.getvalue())
 
