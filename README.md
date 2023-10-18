@@ -71,7 +71,7 @@ If you encounter any issues or have feature requests, please file an issue on th
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache 2.0 License. See [LICENSE](LICENSE) file for details.
 
 ---
 
