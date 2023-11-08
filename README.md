@@ -15,13 +15,13 @@ Bitmap Service is a Python script designed to handle bitmap images. You can use 
 1. Clone this repository:
 
     ```bash
-    git clone https://github.com/yourusername/bitmapservicerepo.git
+    git clone https://github.com/Mitch-Aufiero/bitmap-service.git
     ```
 
 2. Navigate to the directory:
 
     ```bash
-    cd bitmapservicerepo
+    cd bitmap-service
     ```
 
 3. Install the required dependencies:
